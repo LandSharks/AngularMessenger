@@ -1,6 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 import { AppService } from './app.service';
+import { Subscription } from "rxjs/Subscription";
+
+import { Message } from "./message";
 
 
 @Component({
@@ -12,11 +16,10 @@ import { AppService } from './app.service';
 export class AppComponent implements OnInit, OnDestroy {
   title = "app";
 
-  public message: string;
-  public messages: string[];
+  public message: Message;
+  public messages: Message[] = [];
+  private connection: Subscription;
 
-  connection;
-  
 
   constructor(
     private appService: AppService
@@ -27,9 +30,15 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    this.connection = this.appService.getMessages.subscribe(message => {
-
+    this.message = new Message();
+    this.connection = this.appService.getMessages().subscribe(message => {
+      var temp = Object.assign(Message, message);
+      this.messages.push(message);
+      console.log(message);
+      console.log(this.message);
     });
   }
-
+  public ngOnDestroy() {
+    this.connection.unsubscribe();
+  }
 }
