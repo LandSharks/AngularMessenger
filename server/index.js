@@ -11,7 +11,10 @@ io.on('connection', (socket) => {
     });
 
     socket.on('add-message', (message) => {
-        io.emit('message', {type:'new-message', text: message});
+        Message.Type = "new-message";
+        Message.Text = message.text;
+        console.log(Message);
+        io.emit('message', Message);
     });
 })
 
@@ -19,3 +22,8 @@ io.on('connection', (socket) => {
 http.listen(3000, function() {
     console.log('listening...');
 });
+
+var Message = {
+  Text: String,
+  Type: String
+}
