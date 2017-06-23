@@ -1,0 +1,17 @@
+<h1> {{title}} </h1>
+<div *ngFor="let message of messages">
+  <span>{{message.Text}}</span>
+</div>
+<form #messengerForm="ngForm">
+  <div class="form-group">
+    <input type="text"
+           class="form-control"
+           name="message"
+           placeholder="New Message"
+           [(ngModel)]="message.Text"
+           required/>
+    <button type="button"
+            [disabled]="!messengerForm.form.valid"
+            (click)="sendMessage(); messengerForm.reset()">Send</button>
+  </div>
+</form>
